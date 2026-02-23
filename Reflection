@@ -13,10 +13,15 @@ A low discount factor made the agent ignore the final goal reward, so it failed 
 A high discount factor helped the agent focus on long-term rewards,
 allowing it to learn the correct path to the goal.
 
-In the beginning, most episodes ended randomly in holes, so the Q-table stayed close to zero and there was no clear learning. Once the agent randomly reached the goal a few times, it finally received the reward signal (1). This reward then began to propagate backward through the Q-values, helping the agent recognize which actions were better.
 
 Q) At what point in training did the agent start meaningfully improving and why you think that is.
 
-In the beginning, most episodes ended randomly in holes, so the Q-table stayed close to zero and there was no clear learning. Once the agent randomly reached the goal a few times, it finally received the reward signal (1). This reward then began to propagate backward through the Q-values, helping the agent recognize which actions were better.
+In the beginning, most episodes ended randomly in holes, so the Q-table stayed close to zero and
+there was no clear learning. Once the agent randomly reached the goal a few times,
+it finally received the reward signal (1).
+This reward then began to propagate backward through the Q-values, 
+helping the agent recognize which actions were better.
 
-After this point, the agent slowly shifted from mostly random exploration to choosing better actions more often. As more successful episodes occurred, the policy became more stable, and the success rate started increasing consistently
+After this point, the agent slowly shifted from mostly random exploration to choosing better 
+actions more often. As more successful episodes occurred, the policy became more stable, 
+and the success rate started increasing consistently

@@ -2,12 +2,15 @@ import gymnasium as gym
 import numpy as np
 import matplotlib.pyplot as plt
 
+# Training Function
 def run(episodes):
 
   env = gym.make('FrozenLake-v1', map_name ='4x4', is_slippery =True, render_mode =None)
 
+# For 4x4 map: 16 states, 4 actions
   q = np.zeros((env.observation_space.n, env.action_space.n)) # init a 16x4 array
 
+# Hyperparameters
   learning_rate_a = 0.1
   discount_factor_g = 0.99
 
@@ -19,6 +22,7 @@ def run(episodes):
   rewards_per_episode = np.zeros(episodes)
   success_count = 0
 
+# Episode loop
   for i in range(episodes):
 
     total_reward = 0
@@ -26,7 +30,7 @@ def run(episodes):
     terminated = False # true when falls in hole or reached goal
     truncated = False # true when actions > 1000
 
-  
+    # greedy action selection
     while(not terminated and not truncated):
         if rng.random() < epsilon:
             action = env.action_space.sample() # action: 0=left, 1=down, 2=right, 3=up
@@ -36,10 +40,11 @@ def run(episodes):
         new_state,reward,terminated,truncated,_= env.step(action)
         total_reward += reward
 
-        
+        # Updating
         q[state,action]= q[state,action] + learning_rate_a*(reward + discount_factor_g*np.max(q[new_state,:]) - q[state,action])
         state = new_state
 
+    # Decay Exploration Rate
     epsilon = max(epsilon_min, epsilon * epsilon_decay_rate) 
 
     
@@ -116,13 +121,14 @@ def visualize(q):
 if __name__ == "__main__":
     q, rewards = run(1000)
 
+    # Evaluate trained agent
     agent_avg = evaluate_policy(q, episodes=100)
     random_avg = evaluate_random(episodes=100)
 
     print("Agent Average Reward (100 episodes):", agent_avg)
     print("Random Policy Average Reward (100 episodes):", random_avg)
 
-    
+    # Rolling Average for smoother learning curve
     window_size = 100
     rolling_avg = np.convolve(
         rewards,
@@ -132,7 +138,7 @@ if __name__ == "__main__":
 
     visualize(q)
 
-    
+    # Learning Curve
     plt.figure(figsize=(10,5))
     plt.plot(rewards, alpha=0.3, label="Raw Reward")
     plt.plot(rolling_avg, linewidth=2, label="Smoothed (100 ep avg)")
@@ -141,7 +147,6 @@ if __name__ == "__main__":
     plt.legend()
     plt.grid()
     plt.show()
-
 
 
 print("Max Q value:", np.max(q))
