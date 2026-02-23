@@ -122,7 +122,7 @@ if __name__ == "__main__":
     print("Agent Average Reward (100 episodes):", agent_avg)
     print("Random Policy Average Reward (100 episodes):", random_avg)
 
-    # ----- STEP 2: Rolling Average -----
+    
     window_size = 100
     rolling_avg = np.convolve(
         rewards,
@@ -132,7 +132,7 @@ if __name__ == "__main__":
 
     visualize(q)
 
-    # ----- STEP 3: Plot -----
+    
     plt.figure(figsize=(10,5))
     plt.plot(rewards, alpha=0.3, label="Raw Reward")
     plt.plot(rolling_avg, linewidth=2, label="Smoothed (100 ep avg)")
